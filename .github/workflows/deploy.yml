@@ -1,0 +1,15 @@
+# this code needs some changes to work properly.
+
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Render
+        run: curl -X POST <YOUR_RENDER_DEPLOY_HOOK_URL>
