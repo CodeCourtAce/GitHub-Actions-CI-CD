@@ -1,28 +1,25 @@
 # this code needs some changes to work properly.
 
 name: Deploy To Render
-
 on:
   push:
-    branches: [main]
-  pull_request:
     branches:
       - main
-
 jobs:
-  ci:
+  deploy-to-render:
     name: Deploy To Render
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Test
+      # Step 1: Checkout repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      # Step 2: Install dependencies (optional if deployment doesn't require this)
+      - name: Install Dependencies
         run: |
-          npm install
-          npm run test-component
-
-      - name: Deploy
-        if: github.ref == 'refs/heads/main'
+          npm ci
+      # Step 3: Deploy to Render
+      - name: Deploy to Render
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          curl "$deploy_url"
+          curl -X POST "$deploy_url"
